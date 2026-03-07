@@ -3,6 +3,17 @@ import path from "path";
 import matter from "gray-matter";
 
 const contentDirectory = path.join(process.cwd(), "content");
+export interface TinaProduct {
+    slug: string;
+    title: string;
+    price: number | string;
+    category: string;
+    description: string;
+    images: string[];
+    image: string | null;
+    body: string;
+    featured?: boolean | string;
+}
 
 export async function getHomepageData() {
     const filePath = path.join(contentDirectory, "homepage.md");
@@ -34,12 +45,12 @@ export async function getProducts() {
                 ...data,
                 images,
                 image: images[0] || null, // Keep image as a convenience field for grids
-            };
+            } as any; // Cast as individual product
         });
     return products;
 }
 
-export async function getProductBySlug(slug: string) {
+export async function getProductBySlug(slug: string): Promise<TinaProduct | null> {
     const fullPath = path.join(contentDirectory, "products", `${slug}.md`);
     if (!fs.existsSync(fullPath)) {
         return null;
@@ -58,5 +69,5 @@ export async function getProductBySlug(slug: string) {
         ...data,
         images,
         image: images[0] || null,
-    };
+    } as any as TinaProduct;
 }

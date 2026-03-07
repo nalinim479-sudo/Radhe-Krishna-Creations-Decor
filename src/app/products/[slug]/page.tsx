@@ -3,11 +3,12 @@ import { ArrowLeft, MessageCircle, CheckCircle2, ShieldCheck, Truck } from "luci
 import Link from "next/link";
 import Image from "next/image";
 import * as motion from "motion/react-client";
-import { getProductBySlug } from "@/src/lib/tina";
+import { getProductBySlug, type TinaProduct } from "@/src/lib/tina";
 import ProductCarousel from "@/src/components/ProductCarousel";
 
-export async function generateMetadata({ params }: { params: { slug: string } }) {
-    const product = await getProductBySlug(params.slug);
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+    const { slug } = await params;
+    const product = await getProductBySlug(slug);
     if (!product) return { title: "Product Not Found" };
     return {
         title: `${product.title} | Radhe Krishna Creations & Decor`,
@@ -15,8 +16,9 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     };
 }
 
-export default async function ProductDetailPage({ params }: { params: { slug: string } }) {
-    const product = await getProductBySlug(params.slug);
+export default async function ProductDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+    const { slug } = await params;
+    const product = await getProductBySlug(slug);
 
     if (!product) {
         notFound();
