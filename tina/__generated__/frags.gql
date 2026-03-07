@@ -1,0 +1,20 @@
+fragment HomepageParts on Homepage {
+  __typename
+  heroHeadline
+  heroDescription
+  featuredSectionTitle
+  aboutHeadline
+  aboutText
+  ctaHeadline
+  ctaText
+}
+
+fragment ProductParts on Product {
+  __typename
+  title
+  price
+  category
+  description
+  images
+  featured
+}

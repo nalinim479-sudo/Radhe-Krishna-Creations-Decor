@@ -1,0 +1,37 @@
+{
+  "name": "radhe-krishna-decor",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "node \"./node_modules/@tinacms/cli/bin/tinacms\" dev -c \"node ./node_modules/next/dist/bin/next dev\"",
+    "build": "node \"./node_modules/@tinacms/cli/bin/tinacms\" build && node ./node_modules/next/dist/bin/next build",
+    "start": "node ./node_modules/next/dist/bin/next start",
+    "lint": "node ./node_modules/next/dist/bin/next lint"
+  },
+  "dependencies": {
+    "@tinacms/cli": "latest",
+    "client-only": "^0.0.1",
+    "clsx": "^2.1.1",
+    "gray-matter": "^4.0.3",
+    "lucide-react": "^0.468.0",
+    "motion": "^12.23.24",
+    "next": "^15.1.0",
+    "react": "^19.0.0",
+    "react-dnd": "^16.0.1",
+    "react-dnd-html5-backend": "^16.0.1",
+    "react-dom": "^19.0.0",
+    "tailwind-merge": "^3.5.0",
+    "tinacms": "latest"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.2.1",
+    "@types/node": "^22.14.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^4.1.14",
+    "typescript": "^5.8.2"
+  }
+}
