@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 
 interface ProductCarouselProps {
     images: string[];
@@ -73,8 +73,8 @@ export default function ProductCarousel({ images, title }: ProductCarouselProps)
                                 key={idx}
                                 onClick={() => setCurrentIndex(idx)}
                                 className={`w-2 h-2 rounded-full transition-all ${currentIndex === idx
-                                        ? "bg-amber-700 w-6"
-                                        : "bg-white/60 hover:bg-white"
+                                    ? "bg-amber-700 w-6"
+                                    : "bg-white/60 hover:bg-white"
                                     }`}
                                 aria-label={`Go to slide ${idx + 1}`}
                             />
