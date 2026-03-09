@@ -8,6 +8,17 @@ interface CartItem {
     quantity: number;
 }
 
+interface AddressDetails {
+    country: string;
+    state: string;
+    city: string;
+    pincode: string;
+    addressLine1: string;
+    addressLine2: string;
+    landmark: string;
+    mobile: string;
+}
+
 interface CartContextType {
     items: CartItem[];
     addToCart: (product: TinaProduct) => void;
@@ -18,15 +29,29 @@ interface CartContextType {
     totalPrice: number;
     isCartOpen: boolean;
     setIsCartOpen: (isOpen: boolean) => void;
+    address: AddressDetails;
+    setAddress: (address: AddressDetails) => void;
 }
+
+const defaultAddress: AddressDetails = {
+    country: "",
+    state: "",
+    city: "",
+    pincode: "",
+    addressLine1: "",
+    addressLine2: "",
+    landmark: "",
+    mobile: "",
+};
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [items, setItems] = useState<CartItem[]>([]);
     const [isCartOpen, setIsCartOpen] = useState(false);
+    const [address, setAddress] = useState<AddressDetails>(defaultAddress);
 
-    // Load cart from localStorage on mount
+    // Load cart and address from localStorage on mount
     useEffect(() => {
         const savedCart = localStorage.getItem("cart");
         if (savedCart) {
@@ -36,12 +61,25 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 console.error("Failed to parse cart from localStorage", e);
             }
         }
+
+        const savedAddress = localStorage.getItem("address");
+        if (savedAddress) {
+            try {
+                setAddress(JSON.parse(savedAddress));
+            } catch (e) {
+                console.error("Failed to parse address from localStorage", e);
+            }
+        }
     }, []);
 
-    // Save cart to localStorage on change
+    // Save cart and address to localStorage on change
     useEffect(() => {
         localStorage.setItem("cart", JSON.stringify(items));
     }, [items]);
+
+    useEffect(() => {
+        localStorage.setItem("address", JSON.stringify(address));
+    }, [address]);
 
     const addToCart = (product: TinaProduct) => {
         setItems((prev) => {
@@ -98,6 +136,8 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 totalPrice,
                 isCartOpen,
                 setIsCartOpen,
+                address,
+                setAddress,
             }}
         >
             {children}

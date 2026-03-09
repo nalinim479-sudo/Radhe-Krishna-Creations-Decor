@@ -7,8 +7,26 @@ import Image from "next/image";
 import * as motion from "motion/react-client";
 
 export default function CartSidebar() {
-    const { items, isCartOpen, setIsCartOpen, removeFromCart, updateQuantity, totalPrice, totalItems } = useCart();
+    const {
+        items,
+        isCartOpen,
+        setIsCartOpen,
+        removeFromCart,
+        updateQuantity,
+        totalPrice,
+        totalItems,
+        address,
+        setAddress
+    } = useCart();
+    const [step, setStep] = React.useState<"cart" | "address">("cart");
     const sidebarRef = useRef<HTMLDivElement>(null);
+
+    // Reset step when cart closes
+    useEffect(() => {
+        if (!isCartOpen) {
+            setTimeout(() => setStep("cart"), 300);
+        }
+    }, [isCartOpen]);
 
     // Close on escape key
     useEffect(() => {
@@ -30,10 +48,33 @@ export default function CartSidebar() {
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, [isCartOpen, setIsCartOpen]);
 
+    const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        const { name, value } = e.target;
+        setAddress({ ...address, [name]: value });
+    };
+
+    const isAddressValid = () => {
+        return (
+            address.country &&
+            address.state &&
+            address.city &&
+            address.pincode &&
+            address.addressLine1 &&
+            address.addressLine2 &&
+            address.mobile
+        );
+    };
+
     const handleCheckout = () => {
+        if (!isAddressValid()) return;
+
         const businessNumber = "919989411965";
         let message = `*New Order from Radhe Krishna Creations & Decor*\n\n`;
-        message += `I would like to order the following items:\n\n`;
+        message += `*Customer Details:*\n`;
+        message += `Mobile: ${address.mobile}\n`;
+        message += `Address: ${address.addressLine1}, ${address.addressLine2}, ${address.city}, ${address.state} - ${address.pincode}, ${address.country}\n`;
+        if (address.landmark) message += `Landmark: ${address.landmark}\n`;
+        message += `\n*Order Items:*\n`;
 
         items.forEach((item, index) => {
             message += `${index + 1}. *${item.product.title}*\n`;
@@ -74,10 +115,14 @@ export default function CartSidebar() {
                 <div className="p-6 border-b border-stone-100 flex items-center justify-between bg-amber-50/50">
                     <div className="flex items-center gap-3">
                         <ShoppingBag className="w-6 h-6 text-amber-700" />
-                        <h2 className="text-xl font-serif font-bold text-stone-900">Your Cart</h2>
-                        <span className="bg-amber-700 text-white text-xs px-2 py-0.5 rounded-full font-sans">
-                            {totalItems}
-                        </span>
+                        <h2 className="text-xl font-serif font-bold text-stone-900">
+                            {step === "cart" ? "Your Cart" : "Shipping Details"}
+                        </h2>
+                        {step === "cart" && (
+                            <span className="bg-amber-700 text-white text-xs px-2 py-0.5 rounded-full font-sans">
+                                {totalItems}
+                            </span>
+                        )}
                     </div>
                     <button
                         onClick={() => setIsCartOpen(false)}
@@ -87,68 +132,171 @@ export default function CartSidebar() {
                     </button>
                 </div>
 
-                {/* Items List */}
+                {/* Content */}
                 <div className="flex-grow overflow-y-auto p-6 space-y-6">
-                    {items.length === 0 ? (
-                        <div className="h-full flex flex-col items-center justify-center text-center space-y-4 opacity-60">
-                            <div className="w-20 h-20 bg-stone-100 rounded-full flex items-center justify-center">
-                                <ShoppingBag className="w-10 h-10 text-stone-400" />
+                    {step === "cart" ? (
+                        items.length === 0 ? (
+                            <div className="h-full flex flex-col items-center justify-center text-center space-y-4 opacity-60">
+                                <div className="w-20 h-20 bg-stone-100 rounded-full flex items-center justify-center">
+                                    <ShoppingBag className="w-10 h-10 text-stone-400" />
+                                </div>
+                                <div>
+                                    <p className="text-lg font-medium text-stone-900">Your cart is empty</p>
+                                    <p className="text-sm text-stone-500">Add some beautiful decor to get started!</p>
+                                </div>
+                                <button
+                                    onClick={() => setIsCartOpen(false)}
+                                    className="mt-4 text-amber-700 font-medium border-b border-amber-700 pb-0.5 hover:text-amber-800 transition-colors"
+                                >
+                                    Continue Shopping
+                                </button>
                             </div>
-                            <div>
-                                <p className="text-lg font-medium text-stone-900">Your cart is empty</p>
-                                <p className="text-sm text-stone-500">Add some beautiful decor to get started!</p>
-                            </div>
-                            <button
-                                onClick={() => setIsCartOpen(false)}
-                                className="mt-4 text-amber-700 font-medium border-b border-amber-700 pb-0.5 hover:text-amber-800 transition-colors"
-                            >
-                                Continue Shopping
-                            </button>
-                        </div>
+                        ) : (
+                            items.map((item) => (
+                                <div key={item.product.slug} className="flex gap-4 group">
+                                    <div className="relative w-24 h-24 rounded-xl overflow-hidden bg-stone-100 shrink-0 border border-stone-100">
+                                        <Image
+                                            src={item.product.image || "/placeholder.png"}
+                                            alt={item.product.title}
+                                            fill
+                                            className="object-cover"
+                                        />
+                                    </div>
+                                    <div className="flex-grow flex flex-col justify-between py-1">
+                                        <div>
+                                            <div className="flex justify-between items-start gap-2">
+                                                <h3 className="font-medium text-stone-900 line-clamp-1">{item.product.title}</h3>
+                                                <button
+                                                    onClick={() => removeFromCart(item.product.slug)}
+                                                    className="text-stone-300 hover:text-red-500 transition-colors p-1"
+                                                >
+                                                    <Trash2 className="w-4 h-4" />
+                                                </button>
+                                            </div>
+                                            <p className="text-amber-700 font-medium">₹{item.product.price}</p>
+                                        </div>
+                                        <div className="flex items-center gap-3">
+                                            <div className="flex items-center border border-stone-200 rounded-lg overflow-hidden bg-stone-50">
+                                                <button
+                                                    onClick={() => updateQuantity(item.product.slug, item.quantity - 1)}
+                                                    className="p-1.5 hover:bg-stone-100 text-stone-600 transition-colors"
+                                                >
+                                                    <Minus className="w-3.5 h-3.5" />
+                                                </button>
+                                                <span className="w-8 text-center text-sm font-medium">{item.quantity}</span>
+                                                <button
+                                                    onClick={() => updateQuantity(item.product.slug, item.quantity + 1)}
+                                                    className="p-1.5 hover:bg-stone-100 text-stone-600 transition-colors"
+                                                >
+                                                    <Plus className="w-3.5 h-3.5" />
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))
+                        )
                     ) : (
-                        items.map((item) => (
-                            <div key={item.product.slug} className="flex gap-4 group">
-                                <div className="relative w-24 h-24 rounded-xl overflow-hidden bg-stone-100 shrink-0 border border-stone-100">
-                                    <Image
-                                        src={item.product.image || "/placeholder.png"}
-                                        alt={item.product.title}
-                                        fill
-                                        className="object-cover"
+                        /* Address Form */
+                        <form className="space-y-4 pb-8">
+                            <div className="space-y-1.5">
+                                <label className="text-sm font-medium text-stone-700">Country*</label>
+                                <select
+                                    name="country"
+                                    value={address.country}
+                                    onChange={handleAddressChange}
+                                    className="w-full p-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all bg-white"
+                                >
+                                    <option value="">Please enter your country</option>
+                                    <option value="India">India</option>
+                                </select>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="space-y-1.5">
+                                    <label className="text-sm font-medium text-stone-700">State*</label>
+                                    <input
+                                        type="text"
+                                        name="state"
+                                        placeholder="Choose state"
+                                        value={address.state}
+                                        onChange={handleAddressChange}
+                                        className="w-full p-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all font-sans"
                                     />
                                 </div>
-                                <div className="flex-grow flex flex-col justify-between py-1">
-                                    <div>
-                                        <div className="flex justify-between items-start gap-2">
-                                            <h3 className="font-medium text-stone-900 line-clamp-1">{item.product.title}</h3>
-                                            <button
-                                                onClick={() => removeFromCart(item.product.slug)}
-                                                className="text-stone-300 hover:text-red-500 transition-colors p-1"
-                                            >
-                                                <Trash2 className="w-4 h-4" />
-                                            </button>
-                                        </div>
-                                        <p className="text-amber-700 font-medium">₹{item.product.price}</p>
-                                    </div>
-                                    <div className="flex items-center gap-3">
-                                        <div className="flex items-center border border-stone-200 rounded-lg overflow-hidden bg-stone-50">
-                                            <button
-                                                onClick={() => updateQuantity(item.product.slug, item.quantity - 1)}
-                                                className="p-1.5 hover:bg-stone-100 text-stone-600 transition-colors"
-                                            >
-                                                <Minus className="w-3.5 h-3.5" />
-                                            </button>
-                                            <span className="w-8 text-center text-sm font-medium">{item.quantity}</span>
-                                            <button
-                                                onClick={() => updateQuantity(item.product.slug, item.quantity + 1)}
-                                                className="p-1.5 hover:bg-stone-100 text-stone-600 transition-colors"
-                                            >
-                                                <Plus className="w-3.5 h-3.5" />
-                                            </button>
-                                        </div>
-                                    </div>
+                                <div className="space-y-1.5">
+                                    <label className="text-sm font-medium text-stone-700">City*</label>
+                                    <input
+                                        type="text"
+                                        name="city"
+                                        placeholder="Choose city"
+                                        value={address.city}
+                                        onChange={handleAddressChange}
+                                        className="w-full p-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all font-sans"
+                                    />
                                 </div>
                             </div>
-                        ))
+
+                            <div className="space-y-1.5">
+                                <label className="text-sm font-medium text-stone-700">Pincode/Zipcode*</label>
+                                <input
+                                    type="text"
+                                    name="pincode"
+                                    placeholder="Please enter your Pincode"
+                                    value={address.pincode}
+                                    onChange={handleAddressChange}
+                                    className="w-full p-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all font-sans"
+                                />
+                            </div>
+
+                            <div className="space-y-1.5">
+                                <label className="text-sm font-medium text-stone-700">Flat, House no., Building*</label>
+                                <input
+                                    type="text"
+                                    name="addressLine1"
+                                    placeholder="Flat, House no., Building, Company, Apartment"
+                                    value={address.addressLine1}
+                                    onChange={handleAddressChange}
+                                    className="w-full p-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all font-sans"
+                                />
+                            </div>
+
+                            <div className="space-y-1.5">
+                                <label className="text-sm font-medium text-stone-700">Area, Colony, Street, Village*</label>
+                                <input
+                                    type="text"
+                                    name="addressLine2"
+                                    placeholder="Area, Colony, Street, Sector, Village"
+                                    value={address.addressLine2}
+                                    onChange={handleAddressChange}
+                                    className="w-full p-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all font-sans"
+                                />
+                            </div>
+
+                            <div className="space-y-1.5">
+                                <label className="text-sm font-medium text-stone-700">Landmark</label>
+                                <input
+                                    type="text"
+                                    name="landmark"
+                                    placeholder="near post-office, hospital, school, bank"
+                                    value={address.landmark}
+                                    onChange={handleAddressChange}
+                                    className="w-full p-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all font-sans"
+                                />
+                            </div>
+
+                            <div className="space-y-1.5">
+                                <label className="text-sm font-medium text-stone-700">Mobile Number*</label>
+                                <input
+                                    type="tel"
+                                    name="mobile"
+                                    placeholder="Please enter your mobile number"
+                                    value={address.mobile}
+                                    onChange={handleAddressChange}
+                                    className="w-full p-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all font-sans"
+                                />
+                            </div>
+                        </form>
                     )}
                 </div>
 
@@ -156,25 +304,47 @@ export default function CartSidebar() {
                 {items.length > 0 && (
                     <div className="p-6 border-t border-stone-100 bg-stone-50 space-y-4">
                         <div className="flex justify-between items-center">
-                            <span className="text-stone-500">Subtotal</span>
+                            <span className="text-stone-500">{step === "cart" ? "Subtotal" : "Total to Pay"}</span>
                             <span className="text-2xl font-serif font-bold text-stone-900">₹{totalPrice}</span>
                         </div>
-                        <p className="text-xs text-stone-400 text-center">
-                            Shipping and taxes calculated at checkout via WhatsApp
-                        </p>
-                        <button
-                            onClick={handleCheckout}
-                            className="w-full bg-green-600 hover:bg-green-700 text-white py-4 rounded-xl font-medium flex items-center justify-center gap-3 shadow-lg shadow-green-600/20 transition-all hover:scale-[1.02] active:scale-95"
-                        >
-                            <MessageCircle className="w-5 h-5" />
-                            Checkout via WhatsApp
-                        </button>
-                        <button
-                            onClick={() => setIsCartOpen(false)}
-                            className="w-full text-stone-500 hover:text-stone-800 text-sm font-medium transition-colors"
-                        >
-                            Continue Shopping
-                        </button>
+
+                        {step === "cart" ? (
+                            <button
+                                onClick={() => setStep("address")}
+                                className="w-full bg-amber-700 hover:bg-amber-800 text-white py-4 rounded-xl font-medium flex items-center justify-center gap-3 shadow-lg shadow-amber-700/20 transition-all hover:scale-[1.02] active:scale-95"
+                            >
+                                Proceed to Shipping
+                            </button>
+                        ) : (
+                            <div className="space-y-3">
+                                <button
+                                    onClick={handleCheckout}
+                                    disabled={!isAddressValid()}
+                                    className={`w-full py-4 rounded-xl font-medium flex items-center justify-center gap-3 transition-all ${isAddressValid()
+                                        ? "bg-green-600 hover:bg-green-700 text-white shadow-lg shadow-green-600/20 hover:scale-[1.02] active:scale-95"
+                                        : "bg-stone-200 text-stone-400 cursor-not-allowed"
+                                        }`}
+                                >
+                                    <MessageCircle className="w-5 h-5" />
+                                    Checkout via WhatsApp
+                                </button>
+                                <button
+                                    onClick={() => setStep("cart")}
+                                    className="w-full text-stone-500 hover:text-stone-800 text-sm font-medium transition-colors"
+                                >
+                                    Back to Cart
+                                </button>
+                            </div>
+                        )}
+
+                        {step === "cart" && (
+                            <button
+                                onClick={() => setIsCartOpen(false)}
+                                className="w-full text-stone-500 hover:text-stone-800 text-sm font-medium transition-colors"
+                            >
+                                Continue Shopping
+                            </button>
+                        )}
                     </div>
                 )}
             </motion.div>
