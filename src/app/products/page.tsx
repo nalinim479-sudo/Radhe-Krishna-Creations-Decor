@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getProducts } from "@/src/lib/tina";
 import Image from "next/image";
 import * as motion from "motion/react-client";
+import AddToCartButton from "@/src/components/AddToCartButton";
 
 export default async function ProductsPage() {
     const products = await getProducts();
@@ -43,14 +44,20 @@ export default async function ProductsPage() {
                                         {product.title}
                                     </h3>
                                 </Link>
-                                <div className="flex items-center justify-between mt-auto">
+                                <div className="flex items-center justify-between mt-auto pt-4">
                                     <span className="text-lg font-medium text-stone-900">₹{product.price}</span>
-                                    <Link
-                                        href={`/products/${product.slug}`}
-                                        className="text-amber-700 hover:text-amber-800 font-medium text-sm"
-                                    >
-                                        View Details
-                                    </Link>
+                                    <div className="flex items-center gap-2">
+                                        <AddToCartButton
+                                            product={product}
+                                            className="p-2 bg-amber-50 text-amber-700 hover:bg-amber-700 hover:text-white rounded-full transition-all border border-amber-100"
+                                        />
+                                        <Link
+                                            href={`/products/${product.slug}`}
+                                            className="text-stone-500 hover:text-amber-700 font-medium text-sm px-3 py-1.5 rounded-full hover:bg-stone-50 transition-colors"
+                                        >
+                                            Details
+                                        </Link>
+                                    </div>
                                 </div>
                             </div>
                         </motion.div>

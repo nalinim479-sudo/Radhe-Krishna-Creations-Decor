@@ -3,12 +3,14 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { Menu, X, Instagram, Mail, Phone, MessageCircle } from "lucide-react";
+import { Menu, X, Instagram, Mail, Phone, MessageCircle, ShoppingBag } from "lucide-react";
 import { cn } from "@/src/lib/utils";
+import { useCart } from "@/src/context/CartContext";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const pathname = usePathname();
+    const { totalItems, setIsCartOpen } = useCart();
 
     const navLinks = [
         { name: "Home", path: "/" },
@@ -69,6 +71,17 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
                     {/* Actions */}
                     <div className="hidden md:flex items-center gap-4">
+                        <button
+                            onClick={() => setIsCartOpen(true)}
+                            className="relative p-2 text-stone-600 hover:text-amber-700 transition-colors"
+                        >
+                            <ShoppingBag className="w-6 h-6" />
+                            {totalItems > 0 && (
+                                <span className="absolute top-0 right-0 bg-amber-700 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center border-2 border-white">
+                                    {totalItems}
+                                </span>
+                            )}
+                        </button>
                         <a
                             href="https://wa.me/919989411965"
                             target="_blank"
@@ -81,12 +94,25 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     </div>
 
                     {/* Mobile Menu Toggle */}
-                    <button
-                        className="md:hidden p-2 text-stone-600"
-                        onClick={() => setIsMenuOpen(!isMenuOpen)}
-                    >
-                        {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-                    </button>
+                    <div className="flex items-center gap-2 md:hidden">
+                        <button
+                            onClick={() => setIsCartOpen(true)}
+                            className="relative p-2 text-stone-600"
+                        >
+                            <ShoppingBag className="w-6 h-6" />
+                            {totalItems > 0 && (
+                                <span className="absolute top-0 right-0 bg-amber-700 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center border-2 border-white">
+                                    {totalItems}
+                                </span>
+                            )}
+                        </button>
+                        <button
+                            className="p-2 text-stone-600"
+                            onClick={() => setIsMenuOpen(!isMenuOpen)}
+                        >
+                            {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                        </button>
+                    </div>
                 </div>
 
                 {/* Mobile Nav */}

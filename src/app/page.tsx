@@ -4,6 +4,8 @@ import * as motion from "motion/react-client";
 import { getHomepageData, getProducts } from "@/src/lib/tina";
 import Image from "next/image";
 
+import AddToCartButton from "@/src/components/AddToCartButton";
+
 export default async function Home() {
     const data = await getHomepageData();
     const allProducts = await getProducts();
@@ -103,14 +105,20 @@ export default async function Home() {
                                     </p>
                                     <div className="flex items-center justify-between mt-auto pt-4 border-t border-stone-100">
                                         <span className="text-lg font-medium text-stone-900">₹{product.price}</span>
-                                        <a
-                                            href={`https://wa.me/919989411965?text=Hi%20I%20want%20to%20order%20this%20product:%0A%0A*${encodeURIComponent(product.title)}*%0APrice:%20%E2%82%B9${product.price}%0ALink:%20https://radhekrishnadecor.com/products/${product.slug}`}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="text-green-600 hover:text-green-700 font-medium text-sm flex items-center gap-1 bg-green-50 hover:bg-green-100 px-3 py-1.5 rounded-full transition-colors"
-                                        >
-                                            <MessageCircle className="w-4 h-4" /> Order
-                                        </a>
+                                        <div className="flex items-center gap-2">
+                                            <AddToCartButton
+                                                product={product}
+                                                className="p-2 bg-amber-50 text-amber-700 hover:bg-amber-700 hover:text-white rounded-full transition-all border border-amber-100 shadow-sm"
+                                            />
+                                            <a
+                                                href={`https://wa.me/919989411965?text=Hi%20I%20want%20to%20order%20this%20product:%0A%0A*${encodeURIComponent(product.title)}*%0APrice:%20%E2%82%B9${product.price}%0ALink:%20https://radhekrishnadecor.com/products/${product.slug}`}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="text-green-600 hover:text-green-700 font-medium text-sm flex items-center gap-1 bg-green-50 hover:bg-green-100 px-3 py-1.5 rounded-full transition-colors"
+                                            >
+                                                <MessageCircle className="w-4 h-4" /> Order
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                             </motion.div>

@@ -6,6 +6,8 @@ import * as motion from "motion/react-client";
 import { getProductBySlug, type TinaProduct } from "@/src/lib/tina";
 import ProductCarousel from "@/src/components/ProductCarousel";
 
+import AddToCartButton from "@/src/components/AddToCartButton";
+
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
     const product = await getProductBySlug(slug);
@@ -94,18 +96,24 @@ Link: https://radhekrishnadecor.com/products/${product.slug}`;
                             {/* Order Button */}
                             <div className="mt-auto">
                                 <div className="bg-amber-50 border border-amber-100 rounded-2xl p-6 mb-6">
-                                    <h3 className="font-medium text-amber-900 mb-2">How to order?</h3>
-                                    <p className="text-sm text-amber-800/80 mb-4">
-                                        Click the button below to send us a message on WhatsApp with the product details. We'll assist you with payment and shipping.
+                                    <h3 className="font-medium text-amber-900 mb-2">Ready to order?</h3>
+                                    <p className="text-sm text-amber-800/80 mb-6">
+                                        Add to your cart to order multiple items at once, or order this single piece directly on WhatsApp.
                                     </p>
-                                    <a
-                                        href={whatsappUrl}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="w-full flex items-center justify-center gap-3 bg-green-600 hover:bg-green-500 text-white px-8 py-4 rounded-xl text-lg font-medium transition-all hover:shadow-lg hover:shadow-green-600/20"
-                                    >
-                                        <MessageCircle className="w-6 h-6" /> Order on WhatsApp
-                                    </a>
+                                    <div className="flex flex-col sm:flex-row gap-4">
+                                        <AddToCartButton
+                                            product={product}
+                                            className="flex-1 flex items-center justify-center gap-3 bg-amber-700 hover:bg-amber-800 text-white px-8 py-4 rounded-xl text-lg font-medium transition-all hover:shadow-lg hover:shadow-amber-700/20"
+                                        />
+                                        <a
+                                            href={whatsappUrl}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="flex-1 flex items-center justify-center gap-3 bg-green-600 hover:bg-green-500 text-white px-8 py-4 rounded-xl text-lg font-medium transition-all hover:shadow-lg hover:shadow-green-600/20"
+                                        >
+                                            <MessageCircle className="w-6 h-6" /> Direct Order
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </motion.div>
