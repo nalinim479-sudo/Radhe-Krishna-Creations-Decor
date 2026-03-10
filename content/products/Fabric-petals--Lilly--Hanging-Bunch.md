@@ -8,6 +8,6 @@ description: |
   on - 9989411965
 images:
   - /images/IMG_20260305_135428.jpg
-featured: true
+featured: false
 ---
 
