@@ -11,6 +11,6 @@ images:
   - /images/IMG_20260305_133825.jpg
   - /images/IMG_20260305_133627.jpg
   - /images/IMG_20260227_094947.jpg
-featured: true
+featured: false
 ---
 
