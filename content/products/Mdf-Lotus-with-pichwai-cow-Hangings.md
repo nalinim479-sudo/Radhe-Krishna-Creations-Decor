@@ -10,5 +10,6 @@ description: |
 images:
   - /images/IMG_20260305_134443.jpg
   - /images/IMG_20260305_134459.jpg
+featured: false
 ---
 
