@@ -22,6 +22,7 @@ export default defineConfig({
             publicFolder: "public",
         },
     },
+    /* 
     cmsCallback: (cms) => {
         cms.sidebar.addAdminAction({
             name: "publish",
@@ -46,6 +47,7 @@ export default defineConfig({
         });
         return cms;
     },
+    */
     schema: {
         collections: [
             {
