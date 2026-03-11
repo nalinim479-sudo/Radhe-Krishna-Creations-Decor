@@ -1,7 +1,11 @@
 import { defineConfig } from "tinacms";
 
 // Your hosting provider likely exposes this as an environment variable
-const branch = process.env.HEAD || process.env.VERCEL_GIT_COMMIT_REF || "main";
+const branch =
+    process.env.NEXT_PUBLIC_TINA_BRANCH ||
+    process.env.HEAD ||
+    process.env.VERCEL_GIT_COMMIT_REF ||
+    "main";
 
 export default defineConfig({
     branch,
@@ -17,6 +21,30 @@ export default defineConfig({
             mediaRoot: "images",
             publicFolder: "public",
         },
+    },
+    cmsCallback: (cms) => {
+        cms.sidebar.addAdminAction({
+            name: "publish",
+            label: "Publish to Live Site",
+            component: "button",
+            onClick: async () => {
+                if (confirm("Are you sure you want to publish all changes to the live website? This will trigger a production deployment.")) {
+                    try {
+                        const res = await fetch("/api/publish", { method: "POST" });
+                        const data = await res.json();
+                        if (res.ok) {
+                            alert("Publishing started! It may take a few minutes for changes to appear on the live site.");
+                        } else {
+                            alert("Failed to publish: " + (data.message || "Unknown error"));
+                        }
+                    } catch (e) {
+                        alert("An error occurred while publishing.");
+                        console.error(e);
+                    }
+                }
+            },
+        });
+        return cms;
     },
     schema: {
         collections: [
