@@ -5,6 +5,7 @@ import { X, ShoppingBag, Plus, Minus, Trash2, MessageCircle } from "lucide-react
 import { useCart } from "@/src/context/CartContext";
 import Image from "next/image";
 import * as motion from "motion/react-client";
+import { siteConfig } from "@/src/config/site";
 
 export default function CartSidebar() {
     const {
@@ -68,8 +69,8 @@ export default function CartSidebar() {
     const handleCheckout = () => {
         if (!isAddressValid()) return;
 
-        const businessNumber = "919989411965";
-        let message = `*New Order from Radhe Krishna Creations & Decor*\n\n`;
+        const businessNumber = siteConfig.phone;
+        let message = `*New Order from ${siteConfig.name}*\n\n`;
         message += `*Customer Details:*\n`;
         message += `Mobile: ${address.mobile}\n`;
         message += `Address: ${address.addressLine1}, ${address.addressLine2}, ${address.city}, ${address.state} - ${address.pincode}, ${address.country}\n`;

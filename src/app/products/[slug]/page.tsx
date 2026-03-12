@@ -5,6 +5,7 @@ import Image from "next/image";
 import * as motion from "motion/react-client";
 import { getProductBySlug, type TinaProduct } from "@/src/lib/tina";
 import ProductCarousel from "@/src/components/ProductCarousel";
+import { siteConfig } from "@/src/config/site";
 
 import AddToCartButton from "@/src/components/AddToCartButton";
 
@@ -13,7 +14,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     const product = await getProductBySlug(slug);
     if (!product) return { title: "Product Not Found" };
     return {
-        title: `${product.title} | Radhe Krishna Creations & Decor`,
+        title: `${product.title} | ${siteConfig.name}`,
         description: product.description,
     };
 }
@@ -32,7 +33,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
 Price: ₹${product.price}
 Link: https://radhekrishnadecor.com/products/${product.slug}`;
 
-    const whatsappUrl = `https://wa.me/919989411965?text=${encodeURIComponent(whatsappMessage)}`;
+    const whatsappUrl = `https://wa.me/${siteConfig.phone}?text=${encodeURIComponent(whatsappMessage)}`;
 
     return (
         <div className="min-h-screen bg-[#fcfaf8] py-12">
