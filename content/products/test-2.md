@@ -14,5 +14,9 @@ description: |-
   .
   .
   .
+images:
+  - /images/IMG_20260305_134819.jpg
+  - /images/IMG_20260305_134859.jpg
+  - /images/IMG_20260305_134949.jpg
 ---
 
