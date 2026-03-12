@@ -16,10 +16,16 @@ export interface TinaProduct {
 }
 
 export async function getHomepageData() {
-    const filePath = path.join(contentDirectory, "homepage.md");
-    const fileContents = fs.readFileSync(filePath, "utf8");
-    const { data } = matter(fileContents);
-    return data;
+    try {
+        const filePath = path.join(contentDirectory, "homepage.md");
+        if (!fs.existsSync(filePath)) return {};
+        const fileContents = fs.readFileSync(filePath, "utf8");
+        const { data } = matter(fileContents);
+        return data || {};
+    } catch (error) {
+        console.error("Error loading homepage data:", error);
+        return {};
+    }
 }
 
 export async function getProducts() {

@@ -29,7 +29,7 @@ export default async function ProductsPage() {
                         >
                             <Link href={`/products/${product.slug}`} className="relative aspect-[4/3] overflow-hidden block">
                                 <Image
-                                    src={product.image}
+                                    src={product.image || 'https://placehold.co/600x400/ffffff/78350f?text=Product'}
                                     alt={product.title}
                                     fill
                                     className="object-cover transition-transform duration-700 group-hover:scale-105"

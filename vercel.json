@@ -1,5 +1,7 @@
 {
     "github": {
         "silent": true
-    }
+    },
+    "installCommand": "if [ \"$VERCEL_GIT_COMMIT_REF\" = \"drafts\" ]; then exit 0; else npm install; fi",
+    "buildCommand": "if [ \"$VERCEL_GIT_COMMIT_REF\" = \"drafts\" ]; then exit 0; else npm run build; fi"
 }
