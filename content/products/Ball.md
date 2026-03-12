@@ -1,10 +1,10 @@
 ---
 title: Ball
-price: 40
+price: 20
 category: Festive Decor
-description: Llng 2ft
+description: 2ft
 images:
-  - /images/IMG_20260312_114752.jpg
+  - /images/IMG_20260312_115641.jpg
 featured: true
 ---
 
