@@ -3,8 +3,9 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { Menu, X, Instagram, Mail, Phone, MessageCircle, ShoppingBag } from "lucide-react";
+import { Menu, X, Instagram, Mail, Phone, MessageCircle, ShoppingBag, Facebook, MapPin, ChevronRight } from "lucide-react";
 import { cn } from "@/src/lib/utils";
+import { siteConfig } from "@/src/config/site";
 import { useCart } from "@/src/context/CartContext";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -43,10 +44,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                         </div>
                         <div className="flex flex-col">
                             <span className="font-serif text-2xl font-bold text-amber-900 tracking-tight leading-none uppercase">
-                                Radhe Krishna
+                                {siteConfig.name.split(' ').slice(0, 2).join(' ')}
                             </span>
                             <span className="font-serif text-sm text-amber-700 hidden sm:block mt-1 tracking-widest uppercase">
-                                Creations & Decor
+                                {siteConfig.tagline}
                             </span>
                         </div>
                     </Link>
@@ -83,7 +84,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                             )}
                         </button>
                         <a
-                            href="https://wa.me/919989411965"
+                            href={siteConfig.links.whatsapp}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-full text-sm font-medium transition-colors"
@@ -132,7 +133,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                             </Link>
                         ))}
                         <a
-                            href="https://wa.me/919989411965"
+                            href={siteConfig.links.whatsapp}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="flex items-center justify-center gap-2 bg-green-600 text-white px-4 py-3 rounded-xl text-base font-medium mt-4"
@@ -166,20 +167,20 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                                 />
                             </div>
                             <h3 className="font-serif text-2xl text-white">
-                                Radhe Krishna Creations & Decor
+                                {siteConfig.name}
                             </h3>
                         </div>
                         <p className="text-stone-400 mb-6 max-w-sm">
-                            Elegant Decor for Every Occasion. 🌸 Handcrafted candles, festive decor, and pooja decorations designed with love.
+                            {siteConfig.description}
                         </p>
                         <div className="flex gap-4">
-                            <a href="#" className="w-10 h-10 rounded-full bg-stone-800 flex items-center justify-center hover:bg-amber-700 transition-colors text-white">
+                            <a href={siteConfig.links.instagram} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-stone-800 flex items-center justify-center hover:bg-amber-700 transition-colors text-white">
                                 <Instagram className="w-5 h-5" />
                             </a>
-                            <a href="mailto:rkcd26hyd@gmail.com" className="w-10 h-10 rounded-full bg-stone-800 flex items-center justify-center hover:bg-amber-700 transition-colors text-white">
+                            <a href={`mailto:${siteConfig.email}`} className="w-10 h-10 rounded-full bg-stone-800 flex items-center justify-center hover:bg-amber-700 transition-colors text-white">
                                 <Mail className="w-5 h-5" />
                             </a>
-                            <a href="tel:+919989411965" className="w-10 h-10 rounded-full bg-stone-800 flex items-center justify-center hover:bg-amber-700 transition-colors text-white">
+                            <a href={`tel:${siteConfig.phone}`} className="w-10 h-10 rounded-full bg-stone-800 flex items-center justify-center hover:bg-amber-700 transition-colors text-white">
                                 <Phone className="w-5 h-5" />
                             </a>
                         </div>

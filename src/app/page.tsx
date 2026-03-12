@@ -1,10 +1,16 @@
 import Link from "next/link";
-import { ArrowRight, MessageCircle, Instagram, Heart, Sparkles, Star, ShieldCheck } from "lucide-react";
+import type { Metadata } from "next";
+import { ArrowRight, MessageCircle, Heart, Sparkles, Star, ShieldCheck } from "lucide-react";
 import * as motion from "motion/react-client";
 import { getHomepageData, getProducts } from "@/src/lib/tina";
 import Image from "next/image";
-
+import { siteConfig } from "@/src/config/site";
 import AddToCartButton from "@/src/components/AddToCartButton";
+
+export const metadata: Metadata = {
+    title: `${siteConfig.name} | Premium Spiritual Decor`,
+    description: siteConfig.description,
+};
 
 export default async function Home() {
     const data = await getHomepageData();
@@ -34,56 +40,63 @@ export default async function Home() {
                         className="max-w-3xl mx-auto"
                     >
                         <span className="text-amber-500 font-medium tracking-widest uppercase text-sm mb-6 block">
-                            Radhe Krishna Creations & Decor
+                            {siteConfig.name}
                         </span>
                         <h1 className="text-5xl md:text-7xl font-serif text-white mb-6 leading-tight">
                             {data.heroHeadline}
                         </h1>
-                        <p className="text-lg md:text-xl text-stone-300 mb-10 font-light max-w-2xl mx-auto">
-                            {data.heroDescription}
+                        <p className="text-lg md:text-xl text-stone-300 mb-10 leading-relaxed font-sans max-w-2xl mx-auto">
+                            {data.heroSubheadline}
                         </p>
                         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                             <Link
                                 href="/products"
-                                className="bg-amber-700 hover:bg-amber-600 text-white px-8 py-4 rounded-full text-lg font-medium transition-all hover:scale-105 flex items-center gap-2 w-full sm:w-auto justify-center"
+                                className="bg-amber-700 hover:bg-amber-800 text-white px-8 py-4 rounded-full text-lg font-medium transition-all hover:scale-105 shadow-lg shadow-amber-900/20 flex items-center gap-2 w-full sm:w-auto justify-center"
                             >
                                 View Products <ArrowRight className="w-5 h-5" />
                             </Link>
                             <a
-                                href="https://wa.me/919989411965"
+                                href={siteConfig.links.whatsapp}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="bg-green-600 hover:bg-green-500 text-white px-8 py-4 rounded-full text-lg font-medium transition-all hover:scale-105 flex items-center gap-2 w-full sm:w-auto justify-center"
                             >
-                                <MessageCircle className="w-5 h-5" /> Order via WhatsApp
+                                <MessageCircle className="w-5 h-5" /> Order on WhatsApp
                             </a>
                         </div>
                     </motion.div>
                 </div>
+
+                {/* Decorative Elements */}
+                <div className="absolute bottom-10 left-10 hidden xl:block">
+                    <div className="w-32 h-32 border border-amber-500/20 rounded-full animate-pulse" />
+                </div>
+                <div className="absolute top-10 right-10 hidden xl:block">
+                    <div className="w-24 h-24 border border-amber-500/20 rounded-full animate-pulse delay-700" />
+                </div>
             </section>
 
             {/* Featured Products */}
-            <section className="py-24 bg-[#fcfaf8]">
+            <section className="py-24 bg-white">
                 <div className="container mx-auto px-4">
-                    <div className="text-center mb-16">
-                        <h2 className="text-3xl md:text-4xl font-serif text-stone-900 mb-4">{data.featuredSectionTitle}</h2>
-                        <div className="w-24 h-1 bg-amber-700 mx-auto rounded-full"></div>
-                        <p className="text-stone-500 mt-6 max-w-2xl mx-auto">
-                            Discover our most loved pieces, carefully curated to add a touch of elegance to your home.
-                        </p>
+                    <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+                        <div className="max-w-xl">
+                            <h2 className="text-3xl md:text-4xl font-serif text-stone-900 mb-4">{data.productsHeadline}</h2>
+                            <p className="text-stone-600">{data.productsSubheadline}</p>
+                        </div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
-                        {featuredProducts.map((product: any, index: number) => (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                        {featuredProducts.map((product: any, idx: number) => (
                             <motion.div
                                 key={product.slug}
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
-                                transition={{ duration: 0.5, delay: index * 0.1 }}
-                                className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-stone-100 flex flex-col h-full"
+                                transition={{ duration: 0.5, delay: idx * 0.1 }}
+                                className="group flex flex-col bg-white rounded-2xl overflow-hidden border border-stone-100 hover:shadow-2xl hover:shadow-stone-200/50 transition-all duration-500"
                             >
-                                <Link href={`/products/${product.slug}`} className="relative aspect-[4/3] overflow-hidden block">
+                                <Link href={`/products/${product.slug}`} className="relative aspect-[4/5] overflow-hidden block">
                                     <Image
                                         src={product.image || 'https://placehold.co/600x400/ffffff/78350f?text=Product'}
                                         alt={product.title}
@@ -111,7 +124,7 @@ export default async function Home() {
                                                 className="p-2 bg-amber-50 text-amber-700 hover:bg-amber-700 hover:text-white rounded-full transition-all border border-amber-100 shadow-sm"
                                             />
                                             <a
-                                                href={`https://wa.me/919989411965?text=Hi%20I%20want%20to%20order%20this%20product:%0A%0A*${encodeURIComponent(product.title)}*%0APrice:%20%E2%82%B9${product.price}%0ALink:%20https://radhekrishnadecor.com/products/${product.slug}`}
+                                                href={`${siteConfig.links.whatsapp}?text=Hi%20I%20want%20to%20order%20this%20product:%0A%0A*${encodeURIComponent(product.title)}*%0APrice:%20%E2%82%B9${product.price}%0ALink:%20https://radhekrishnadecor.com/products/${product.slug}`}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                                 className="text-green-600 hover:text-green-700 font-medium text-sm flex items-center gap-1 bg-green-50 hover:bg-green-100 px-3 py-1.5 rounded-full transition-colors"
@@ -199,10 +212,10 @@ export default async function Home() {
                         {data.ctaText}
                     </p>
                     <a
-                        href="https://wa.me/919989411965"
+                        href={siteConfig.links.whatsapp}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-3 bg-green-600 hover:bg-green-500 text-white px-10 py-5 rounded-full text-xl font-medium transition-all hover:scale-105 shadow-lg shadow-green-600/20"
+                        className="bg-green-600 hover:bg-green-500 text-white px-10 py-5 rounded-full text-xl font-medium transition-all hover:scale-105 shadow-lg shadow-green-600/20 inline-flex items-center gap-3"
                     >
                         <MessageCircle className="w-6 h-6" /> Chat with us on WhatsApp
                     </a>
