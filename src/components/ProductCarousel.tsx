@@ -31,14 +31,34 @@ export default function ProductCarousel({ images, title }: ProductCarouselProps)
 
     return (
         <div className="relative aspect-square w-full overflow-hidden group bg-stone-50">
-            <AnimatePresence mode="wait">
+            {/* Preload next/prev images */}
+            <div className="hidden">
+                {images.map((img, idx) => {
+                    // Preload neighbors
+                    const isNeighbor = idx === (currentIndex + 1) % images.length || 
+                                     idx === (currentIndex - 1 + images.length) % images.length;
+                    if (!isNeighbor) return null;
+                    return (
+                        <Image
+                            key={`preload-${idx}`}
+                            src={img}
+                            alt="preload"
+                            width={10}
+                            height={10}
+                            priority={idx === (currentIndex + 1) % images.length}
+                        />
+                    );
+                })}
+            </div>
+
+            <AnimatePresence initial={false}>
                 <motion.div
                     key={currentIndex}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    transition={{ duration: 0.5 }}
-                    className="relative w-full h-full"
+                    transition={{ duration: 0.3 }}
+                    className="absolute inset-0 w-full h-full"
                 >
                     <Image
                         src={images[currentIndex]}
