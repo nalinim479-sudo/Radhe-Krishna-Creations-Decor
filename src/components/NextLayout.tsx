@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { Menu, X, Instagram, Mail, Phone, MessageCircle, ShoppingBag, Facebook, MapPin, ChevronRight } from "lucide-react";
+import { Menu, X, Instagram, Mail, Phone, MessageCircle, ShoppingBag, Facebook, Youtube, MapPin, ChevronRight } from "lucide-react";
 import { cn } from "@/src/lib/utils";
 import { siteConfig } from "@/src/config/site";
 import { useCart } from "@/src/context/CartContext";
@@ -177,6 +177,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                             <a href={siteConfig.links.instagram} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-stone-800 flex items-center justify-center hover:bg-amber-700 transition-colors text-white">
                                 <Instagram className="w-5 h-5" />
                             </a>
+                            <a href={siteConfig.links.facebook} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-stone-800 flex items-center justify-center hover:bg-amber-700 transition-colors text-white">
+                                <Facebook className="w-5 h-5" />
+                            </a>
+                            {siteConfig.links.youtube && (
+                                <a href={siteConfig.links.youtube} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-stone-800 flex items-center justify-center hover:bg-amber-700 transition-colors text-white">
+                                    <Youtube className="w-5 h-5" />
+                                </a>
+                            )}
                             <a href={`mailto:${siteConfig.email}`} className="w-10 h-10 rounded-full bg-stone-800 flex items-center justify-center hover:bg-amber-700 transition-colors text-white">
                                 <Mail className="w-5 h-5" />
                             </a>

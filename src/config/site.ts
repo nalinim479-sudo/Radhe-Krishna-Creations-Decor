@@ -8,9 +8,10 @@ export const siteConfig = {
     currency: "₹",
     logo: "/logo.png",
     links: {
-        whatsapp: "https://wa.me/919989411965",
-        instagram: "https://instagram.com",
-        facebook: "https://facebook.com"
+        whatsapp: "https://wa.me/c/919989411965",
+        instagram: "https://www.instagram.com/rkcreations_decor26?igsh=dXh4ZzA1anVoeTd6",
+        facebook: "https://www.facebook.com/share/1DPsBUrJiA/",
+        youtube: "https://youtube.com/@nalinitalks?si=OwW9oWhsrr80J376"
     },
     theme: {
         primary: "amber-700",

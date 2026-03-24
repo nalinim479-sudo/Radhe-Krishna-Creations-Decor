@@ -13,7 +13,7 @@ export default function ContactPage() {
             icon: <MessageCircle className="w-6 h-6 text-green-600" />,
             label: "WhatsApp",
             value: "+91 9989411965",
-            href: "https://wa.me/919989411965",
+            href: "https://wa.me/c/919989411965",
         },
         {
             icon: <Mail className="w-6 h-6 text-amber-700" />,
@@ -65,7 +65,7 @@ export default function ContactPage() {
                                     The fastest way to get in touch or place an order is via WhatsApp.
                                 </p>
                                 <a
-                                    href="https://wa.me/919989411965"
+                                    href="https://wa.me/c/919989411965"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="w-full flex items-center justify-center gap-3 bg-green-600 hover:bg-green-500 text-white px-8 py-5 rounded-2xl text-xl font-medium transition-all hover:scale-[1.02] shadow-lg shadow-green-600/20"
