@@ -1,6 +1,6 @@
 ---
 title: Handmade Lotus with Cow Hanging
-price: 40
+price: 50
 category: Festive Decor
 description: |-
   Handmade Lotus with Cow Hanging for Home Decor, Entrance Main Door
