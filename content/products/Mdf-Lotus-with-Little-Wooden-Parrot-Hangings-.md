@@ -1,6 +1,6 @@
 ---
 title: 'Mdf Lotus with Little Wooden Parrot Hangings '
-price: 25
+price: 40
 category: Festive Decor
 description: |+
   MOQ-4
