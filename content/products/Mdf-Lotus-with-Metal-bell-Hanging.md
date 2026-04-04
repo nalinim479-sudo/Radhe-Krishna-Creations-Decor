@@ -1,6 +1,6 @@
 ---
 title: Mdf Lotus with Metal bell Hanging
-price: 34
+price: 45
 category: Festive Decor
 description: |
   Lotus Hangings for Decoration 
