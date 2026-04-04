@@ -1,6 +1,6 @@
 ---
 title: Artificial Foam Flower Strings with Bells
-price: 25
+price: 40
 category: Festive Decor
 description: |
   Artificial Foam Flower Strings with Bells

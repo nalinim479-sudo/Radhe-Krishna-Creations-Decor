@@ -1,6 +1,6 @@
 ---
 title: Fabric Parrot Hanging 1.5 ft
-price: 140
+price: 160
 category: Festive Decor
 description: |
 

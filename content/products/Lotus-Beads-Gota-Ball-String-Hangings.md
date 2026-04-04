@@ -1,6 +1,6 @@
 ---
 title: 'Lotus, Beads, Gota Ball String Hangings'
-price: 40
+price: 65
 category: Festive Decor
 description: |-
   MOQ:4

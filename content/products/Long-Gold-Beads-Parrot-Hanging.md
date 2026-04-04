@@ -1,6 +1,6 @@
 ---
 title: Long Gold Beads Parrot Hanging
-price: 150
+price: 170
 category: Festive Decor
 description: |
   MOQ:4
