@@ -1,6 +1,6 @@
 ---
 title: 'Fabric Garland''s '
-price: 120
+price: 140
 category: Festive Decor
 description: |-
   Fabric Garlands 
