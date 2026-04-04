@@ -1,6 +1,6 @@
 ---
 title: Crystal beads with mdf lotus Hanging
-price: 15
+price: 22
 category: Festive Decor
 description: |
 
